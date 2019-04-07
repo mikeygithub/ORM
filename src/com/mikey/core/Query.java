@@ -28,7 +28,9 @@ public abstract class Query implements Cloneable{
      * @return
      */
     public Object executeQueryTemplate(String sql, Object[] params, Class clazz, CallBack callBack){
+
         Connection connection=DBManager.getConnection();
+
         PreparedStatement preparedStatement=null;
 
         ResultSet resultSet=null;
@@ -38,7 +40,7 @@ public abstract class Query implements Cloneable{
             JDBCUtil.handleParams(preparedStatement,params);
             System.out.println(preparedStatement);
             resultSet=preparedStatement.executeQuery();
-            return resultSet;
+            return callBack.doExecute(connection,preparedStatement,resultSet);
         }catch (Exception e){
             e.printStackTrace();
             return null;
